@@ -7,4 +7,4 @@
 
 require('./src/index.test');
 require('./src/common.test');
-require('./src/finite-bar.test');
+require('./src/determinate-bar.test');

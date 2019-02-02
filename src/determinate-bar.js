@@ -3,13 +3,13 @@
 const {
   loadingSharedOperations,
   barSharedOperations,
-  finiteLoadingSharedOperations,
+  determinateLoadingSharedOperations,
   loadingInit,
   barLoadingInit,
-  finiteLoadingInit
+  determinateLoadingInit
 } = require('./common');
 
-const finiteBarLoadingInit = (self, {
+const determinateBarLoadingInit = (self, {
   completedColor = 'green',
   remainingColor = 'gray',
   messageColor = completedColor
@@ -19,7 +19,7 @@ const finiteBarLoadingInit = (self, {
   self.messageColor = messageColor;
 };
 
-function finiteBarRender() {
+function determinateBarRender() {
   this.updateMessage();
   this.clearLine();
   const completedChars = Math.round(this.progress / (100 / this.width));
@@ -27,17 +27,17 @@ function finiteBarRender() {
   this.stream.write(`${'◼'.repeat(completedChars)[this.completedColor]}${'◼'.repeat(remainingChars).dim[this.remainingColor]}`);
 }
 
-const FiniteBar = (config) => {
+const DeterminateBar = (config) => {
   const self = {};
   loadingInit(self, config);
   barLoadingInit(self, config);
-  finiteLoadingInit(self, config);
-  finiteBarLoadingInit(self, config);
+  determinateLoadingInit(self, config);
+  determinateBarLoadingInit(self, config);
   return Object.assign(self,
-    finiteLoadingSharedOperations,
+    determinateLoadingSharedOperations,
     barSharedOperations,
     loadingSharedOperations,
-    { render: finiteBarRender });
+    { render: determinateBarRender });
 };
 
-module.exports = FiniteBar;
+module.exports = DeterminateBar;

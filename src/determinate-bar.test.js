@@ -2,39 +2,39 @@ const tap = require('tap');
 const test = tap.test;
 const rewire = require('rewire');
 const sinon = require('sinon');
-const FiniteBar = rewire('./finite-bar');
+const DeterminateBar = rewire('./determinate-bar');
 
 let loadingInit;
 let barLoadingInit;
-let finiteLoadingInit;
+let determinateLoadingInit;
 let loadingSharedOperations;
 let barSharedOperations;
-let finiteLoadingSharedOperations;
+let determinateLoadingSharedOperations;
 
-test('FiniteBar', (t) => {
+test('DeterminateBar', (t) => {
   tap.beforeEach((end) => {
     loadingSharedOperations = { op1: () => {} };
     barSharedOperations = { op2: () => {} };
-    finiteLoadingSharedOperations = { op3: () => {} };
+    determinateLoadingSharedOperations = { op3: () => {} };
     loadingInit = sinon.spy();
     barLoadingInit = sinon.spy();
-    finiteLoadingInit = sinon.spy();
-    FiniteBar.__set__('loadingSharedOperations', loadingSharedOperations);
-    FiniteBar.__set__('barSharedOperations', barSharedOperations);
-    FiniteBar.__set__('finiteLoadingSharedOperations', finiteLoadingSharedOperations);
-    FiniteBar.__set__('loadingInit', loadingInit);
-    FiniteBar.__set__('barLoadingInit', barLoadingInit);
-    FiniteBar.__set__('finiteLoadingInit', finiteLoadingInit);
+    determinateLoadingInit = sinon.spy();
+    DeterminateBar.__set__('loadingSharedOperations', loadingSharedOperations);
+    DeterminateBar.__set__('barSharedOperations', barSharedOperations);
+    DeterminateBar.__set__('determinateLoadingSharedOperations', determinateLoadingSharedOperations);
+    DeterminateBar.__set__('loadingInit', loadingInit);
+    DeterminateBar.__set__('barLoadingInit', barLoadingInit);
+    DeterminateBar.__set__('determinateLoadingInit', determinateLoadingInit);
 
     end();
   });
 
-  t.test('function: finiteBarLoadingInit', (t) => {
-    const finiteBarLoadingInit = FiniteBar.__get__('finiteBarLoadingInit');
+  t.test('function: determinateBarLoadingInit', (t) => {
+    const determinateBarLoadingInit = DeterminateBar.__get__('determinateBarLoadingInit');
 
     t.test('Should initialize properties', (t) => {
       let context = {};
-      finiteBarLoadingInit(context);
+      determinateBarLoadingInit(context);
       t.same(context.completedColor, 'green');
       t.same(context.remainingColor, 'gray');
       t.same(context.messageColor, 'green');
@@ -42,7 +42,7 @@ test('FiniteBar', (t) => {
       context = {}
 
       const props = { completedColor: 'blue', remainingColor: 'red', messageColor: 'yellow' };
-      finiteBarLoadingInit(context, props);
+      determinateBarLoadingInit(context, props);
       t.same(context.completedColor, 'blue');
       t.same(context.remainingColor, 'red');
       t.same(context.messageColor, 'yellow');
@@ -53,8 +53,8 @@ test('FiniteBar', (t) => {
     t.end();
   });
 
-  t.test('function: finiteBarRender', (t) => {
-    const finiteBarRender = FiniteBar.__get__('finiteBarRender');
+  t.test('function: determinateBarRender', (t) => {
+    const determinateBarRender = DeterminateBar.__get__('determinateBarRender');
     let context;
 
     tap.beforeEach((end) => {
@@ -73,20 +73,20 @@ test('FiniteBar', (t) => {
     });
 
     t.test('Should update the message', (t) => {
-      finiteBarRender.call(context);
+      determinateBarRender.call(context);
       t.ok(context.updateMessage.called);
       t.end();
     });
 
     t.test('Should clear the line', (t) => {
-      finiteBarRender.call(context);
+      determinateBarRender.call(context);
       t.ok(context.clearLine.called);
       t.end();
     });
 
     t.test('Should calculate the completed width', (t) => {
       sinon.spy(Math, 'round');
-      finiteBarRender.call(context);
+      determinateBarRender.call(context);
       t.ok(Math.round.called);
       t.same(Math.round.args[0][0], 21);
       Math.round.restore();
@@ -98,7 +98,7 @@ test('FiniteBar', (t) => {
       Object.defineProperty(String.prototype, 'fakecolor1', { get: getter('1') });
       Object.defineProperty(String.prototype, 'fakecolor2', { get: getter('0') });
 
-      finiteBarRender.call(context);
+      determinateBarRender.call(context);
       const write = context.stream.write;
       t.ok(write.called);
       t.same(write.args[0][0], `${'1'.repeat(21)}${'0'.repeat(21)}`);
@@ -109,31 +109,31 @@ test('FiniteBar', (t) => {
     t.end();
   });
 
-  t.test('function: FiniteBar', (t) => {
+  t.test('function: DeterminateBar', (t) => {
     t.test('Should call the initialization functions', (t) => {
       const config = {};
-      const finiteBarLoadingInit = sinon.spy();
-      FiniteBar.__set__('finiteBarLoadingInit', finiteBarLoadingInit);
-      FiniteBar(config);
+      const determinateBarLoadingInit = sinon.spy();
+      DeterminateBar.__set__('determinateBarLoadingInit', determinateBarLoadingInit);
+      DeterminateBar(config);
       t.ok(loadingInit.called);
       t.same(loadingInit.args[0][1], config);
       t.ok(barLoadingInit.called);
       t.same(barLoadingInit.args[0][1], config);
-      t.ok(finiteLoadingInit.called);
-      t.same(finiteLoadingInit.args[0][1], config);
-      t.ok(finiteBarLoadingInit.called);
-      t.same(finiteBarLoadingInit.args[0][1], config);
+      t.ok(determinateLoadingInit.called);
+      t.same(determinateLoadingInit.args[0][1], config);
+      t.ok(determinateBarLoadingInit.called);
+      t.same(determinateBarLoadingInit.args[0][1], config);
 
       t.end();
     });
 
     t.test('Should return an object with all needed methods', (t) => {
-      const loading = FiniteBar({});
+      const loading = DeterminateBar({});
 
       t.same(loading.op1, loadingSharedOperations.op1);
       t.same(loading.op2, barSharedOperations.op2);
-      t.same(loading.op3, finiteLoadingSharedOperations.op3);
-      t.same(loading.render, FiniteBar.__get__('finiteBarRender'));
+      t.same(loading.op3, determinateLoadingSharedOperations.op3);
+      t.same(loading.render, DeterminateBar.__get__('determinateBarRender'));
 
       t.end();
     });

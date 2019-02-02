@@ -1,5 +1,5 @@
 'use strict';
 
-const FiniteBar = require('./finite-bar');
+const DeterminateBar = require('./determinate-bar');
 
-module.exports = { FiniteBar };
+module.exports = { DeterminateBar };

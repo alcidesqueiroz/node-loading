@@ -49,7 +49,7 @@ const barSharedOperations = {
   }
 };
 
-const finiteLoadingSharedOperations = {
+const determinateLoadingSharedOperations = {
   setProgress(progress) {
     if (!whatype.is(progress, 'number')) throw new Error('The "progress" argument must be a number.');
     if (progress < 0 || progress > 100) throw new Error('The "progress" argument must be a number between 0 and 100.');
@@ -67,15 +67,15 @@ const barLoadingInit = (self, { width = CONSOLE_WIDTH } = {}) => {
   self.width = width;
 };
 
-const finiteLoadingInit = (self) => {
+const determinateLoadingInit = (self) => {
   self.progress = 0;
 };
 
 module.exports = {
   loadingSharedOperations,
   barSharedOperations,
-  finiteLoadingSharedOperations,
+  determinateLoadingSharedOperations,
   loadingInit,
   barLoadingInit,
-  finiteLoadingInit
+  determinateLoadingInit
 };

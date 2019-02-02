@@ -6,10 +6,10 @@ const common = rewire('./common');
 const {
   loadingSharedOperations,
   barSharedOperations,
-  finiteLoadingSharedOperations,
+  determinateLoadingSharedOperations,
   loadingInit,
   barLoadingInit,
-  finiteLoadingInit
+  determinateLoadingInit
 } = common;
 
 test('loadingSharedOperations ', (t) => {
@@ -233,7 +233,7 @@ test('barSharedOperations', (t) => {
   t.end();
 });
 
-test('finiteLoadingSharedOperations', (t) => {
+test('determinateLoadingSharedOperations', (t) => {
   t.test('method: setProgress', (t) => {
     tap.beforeEach((end) => {
       context = {
@@ -244,26 +244,26 @@ test('finiteLoadingSharedOperations', (t) => {
 
     t.test('Should throw an error if the progress param is not a number', (t) => {
       const expectedError = { message: 'The "progress" argument must be a number.' };
-      t.throws(() => finiteLoadingSharedOperations.setProgress('10'), expectedError);
+      t.throws(() => determinateLoadingSharedOperations.setProgress('10'), expectedError);
       t.end();
     });
 
     t.test('Should throw an error if the progress param is not a number between 0 and 100', (t) => {
       const expectedError = { message: 'The "progress" argument must be a number between 0 and 100.' };
-      t.throws(() => finiteLoadingSharedOperations.setProgress(-1), expectedError);
-      t.throws(() => finiteLoadingSharedOperations.setProgress(101), expectedError);
+      t.throws(() => determinateLoadingSharedOperations.setProgress(-1), expectedError);
+      t.throws(() => determinateLoadingSharedOperations.setProgress(101), expectedError);
       t.end();
     });
 
     t.test('Should initialize the progress property', (t) => {
-      finiteLoadingSharedOperations.setProgress.call(context, 42);
+      determinateLoadingSharedOperations.setProgress.call(context, 42);
       t.same(context.progress, 42);
       t.end();
     });
 
     t.test('Should re-render', (t) => {
       t.notOk(context.render.called);
-      finiteLoadingSharedOperations.setProgress.call(context, 42);
+      determinateLoadingSharedOperations.setProgress.call(context, 42);
       t.ok(context.render.called);
       t.end();
     });
@@ -311,10 +311,10 @@ test('function: barLoadingInit', (t) => {
   t.end();
 });
 
-test('function finiteLoadingInit', (t) => {
+test('function determinateLoadingInit', (t) => {
   t.test('Should initialize the progress property as 0', (t) => {
     const context = {};
-    finiteLoadingInit(context);
+    determinateLoadingInit(context);
     t.same(context.progress, 0);
     t.end();
   });
