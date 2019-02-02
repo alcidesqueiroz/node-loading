@@ -14,7 +14,6 @@ $ npm install --save node-loading
 ```
 
 With Yarn:
-
 ```
 $ yarn add node-loading
 ```
