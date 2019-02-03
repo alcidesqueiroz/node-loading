@@ -1,43 +1,51 @@
 'use strict';
 
 const {
-  loadingSharedOperations,
-  barSharedOperations,
-  determinateLoadingSharedOperations,
   loadingInit,
   barLoadingInit,
-  determinateLoadingInit
+  determinateLoadingInit,
+  clearLine,
+  updateMessage,
+  setProgress,
+  showCursor,
+  start
 } = require('./common');
 
-const determinateBarLoadingInit = (self, {
+const determinateBarLoadingInit = (context, {
   completedColor = 'green',
   remainingColor = 'gray',
   messageColor = completedColor
 } = {}) => {
-  self.completedColor = completedColor;
-  self.remainingColor = remainingColor;
-  self.messageColor = messageColor;
+  context.completedColor = completedColor;
+  context.remainingColor = remainingColor;
+  context.messageColor = messageColor;
 };
 
-function determinateBarRender() {
-  this.updateMessage();
-  this.clearLine();
-  const completedChars = Math.round(this.progress / (100 / this.width));
-  const remainingChars = this.width - completedChars;
-  this.stream.write(`${'◼'.repeat(completedChars)[this.completedColor]}${'◼'.repeat(remainingChars).dim[this.remainingColor]}`);
+function determinateBarRender(context) {
+  updateMessage(context);
+  clearLine(context);
+  const completedChars = Math.round(context.progress / (100 / context.width));
+  const remainingChars = context.width - completedChars;
+  context.stream.write(`${'◼'.repeat(completedChars)[context.completedColor]}${'◼'.repeat(remainingChars).dim[context.remainingColor]}`);
 }
 
 const DeterminateBar = (config) => {
-  const self = {};
-  loadingInit(self, config);
-  barLoadingInit(self, config);
-  determinateLoadingInit(self, config);
-  determinateBarLoadingInit(self, config);
-  return Object.assign(self,
-    determinateLoadingSharedOperations,
-    barSharedOperations,
-    loadingSharedOperations,
-    { render: determinateBarRender });
+  const context = {};
+  loadingInit(context, config);
+  barLoadingInit(context, config);
+  determinateLoadingInit(context, config);
+  determinateBarLoadingInit(context, config);
+  return Object.assign(context,
+    {
+      start: () => start(context, determinateBarRender),
+      stop: () => {
+        if (context.clearOnStop) {
+          clearLine(context);
+        }
+        showCursor(context);
+      },
+      setProgress: progress => setProgress(context, determinateBarRender, progress)
+    });
 };
 
 module.exports = DeterminateBar;

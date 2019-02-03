@@ -4,35 +4,43 @@ const rewire = require('rewire');
 const sinon = require('sinon');
 const DeterminateBar = rewire('./determinate-bar');
 
-let loadingInit;
-let barLoadingInit;
-let determinateLoadingInit;
-let loadingSharedOperations;
-let barSharedOperations;
-let determinateLoadingSharedOperations;
+let loadingInit = DeterminateBar.__get__('loadingInit');
+let barLoadingInit = DeterminateBar.__get__('barLoadingInit');
+let determinateLoadingInit = DeterminateBar.__get__('determinateLoadingInit');
+let updateMessage = DeterminateBar.__get__('updateMessage');
+let clearLine = DeterminateBar.__get__('clearLine');
+let showCursor = DeterminateBar.__get__('showCursor');
 
 test('DeterminateBar', (t) => {
+  let loadingInitSpy;
+  let barLoadingInitSpy;
+  let determinateLoadingInitSpy;
+  let updateMessageSpy;
+  let clearLineSpy;
+  let showCursorSpy;
+
   tap.beforeEach((end) => {
-    loadingSharedOperations = { op1: () => {} };
-    barSharedOperations = { op2: () => {} };
-    determinateLoadingSharedOperations = { op3: () => {} };
-    loadingInit = sinon.spy();
-    barLoadingInit = sinon.spy();
-    determinateLoadingInit = sinon.spy();
-    DeterminateBar.__set__('loadingSharedOperations', loadingSharedOperations);
-    DeterminateBar.__set__('barSharedOperations', barSharedOperations);
-    DeterminateBar.__set__('determinateLoadingSharedOperations', determinateLoadingSharedOperations);
-    DeterminateBar.__set__('loadingInit', loadingInit);
-    DeterminateBar.__set__('barLoadingInit', barLoadingInit);
-    DeterminateBar.__set__('determinateLoadingInit', determinateLoadingInit);
+    loadingInitSpy = sinon.spy();
+    barLoadingInitSpy = sinon.spy();
+    determinateLoadingInitSpy = sinon.spy();
+    updateMessageSpy = sinon.spy();
+    clearLineSpy = sinon.spy();
+    showCursorSpy = sinon.spy();
+    DeterminateBar.__set__('loadingInit', loadingInitSpy);
+    DeterminateBar.__set__('barLoadingInit', barLoadingInitSpy);
+    DeterminateBar.__set__('determinateLoadingInit', determinateLoadingInitSpy);
+    DeterminateBar.__set__('updateMessage', updateMessageSpy);
+    DeterminateBar.__set__('clearLine', clearLineSpy);
+    DeterminateBar.__set__('showCursor', showCursorSpy);
 
     end();
   });
 
   t.test('function: determinateBarLoadingInit', (t) => {
-    const determinateBarLoadingInit = DeterminateBar.__get__('determinateBarLoadingInit');
 
     t.test('Should initialize properties', (t) => {
+      const determinateBarLoadingInit = DeterminateBar.__get__('determinateBarLoadingInit');
+
       let context = {};
       determinateBarLoadingInit(context);
       t.same(context.completedColor, 'green');
@@ -40,9 +48,8 @@ test('DeterminateBar', (t) => {
       t.same(context.messageColor, 'green');
 
       context = {}
-
-      const props = { completedColor: 'blue', remainingColor: 'red', messageColor: 'yellow' };
-      determinateBarLoadingInit(context, props);
+      const config = { completedColor: 'blue', remainingColor: 'red', messageColor: 'yellow' };
+      determinateBarLoadingInit(context, config);
       t.same(context.completedColor, 'blue');
       t.same(context.remainingColor, 'red');
       t.same(context.messageColor, 'yellow');
@@ -61,8 +68,6 @@ test('DeterminateBar', (t) => {
       context = {
         progress: 50,
         width: 42,
-        updateMessage: sinon.spy(),
-        clearLine: sinon.spy(),
         completedColor: 'fakecolor1',
         remainingColor: 'fakecolor2',
         stream: {
@@ -73,20 +78,20 @@ test('DeterminateBar', (t) => {
     });
 
     t.test('Should update the message', (t) => {
-      determinateBarRender.call(context);
-      t.ok(context.updateMessage.called);
+      determinateBarRender(context);
+      t.ok(updateMessageSpy.called);
       t.end();
     });
 
     t.test('Should clear the line', (t) => {
-      determinateBarRender.call(context);
-      t.ok(context.clearLine.called);
+      determinateBarRender(context);
+      t.ok(clearLineSpy.called);
       t.end();
     });
 
     t.test('Should calculate the completed width', (t) => {
       sinon.spy(Math, 'round');
-      determinateBarRender.call(context);
+      determinateBarRender(context);
       t.ok(Math.round.called);
       t.same(Math.round.args[0][0], 21);
       Math.round.restore();
@@ -98,7 +103,7 @@ test('DeterminateBar', (t) => {
       Object.defineProperty(String.prototype, 'fakecolor1', { get: getter('1') });
       Object.defineProperty(String.prototype, 'fakecolor2', { get: getter('0') });
 
-      determinateBarRender.call(context);
+      determinateBarRender(context);
       const write = context.stream.write;
       t.ok(write.called);
       t.same(write.args[0][0], `${'1'.repeat(21)}${'0'.repeat(21)}`);
@@ -112,28 +117,27 @@ test('DeterminateBar', (t) => {
   t.test('function: DeterminateBar', (t) => {
     t.test('Should call the initialization functions', (t) => {
       const config = {};
-      const determinateBarLoadingInit = sinon.spy();
-      DeterminateBar.__set__('determinateBarLoadingInit', determinateBarLoadingInit);
+      const determinateBarLoadingInitSpy = sinon.spy();
+      DeterminateBar.__set__('determinateBarLoadingInit', determinateBarLoadingInitSpy);
       DeterminateBar(config);
-      t.ok(loadingInit.called);
-      t.same(loadingInit.args[0][1], config);
-      t.ok(barLoadingInit.called);
-      t.same(barLoadingInit.args[0][1], config);
-      t.ok(determinateLoadingInit.called);
-      t.same(determinateLoadingInit.args[0][1], config);
-      t.ok(determinateBarLoadingInit.called);
-      t.same(determinateBarLoadingInit.args[0][1], config);
+      t.ok(loadingInitSpy.called);
+      t.same(loadingInitSpy.args[0][1], config);
+      t.ok(barLoadingInitSpy.called);
+      t.same(barLoadingInitSpy.args[0][1], config);
+      t.ok(determinateLoadingInitSpy.called);
+      t.same(determinateLoadingInitSpy.args[0][1], config);
+      t.ok(determinateBarLoadingInitSpy.called);
+      t.same(determinateBarLoadingInitSpy.args[0][1], config);
 
       t.end();
     });
 
-    t.test('Should return an object with all needed methods', (t) => {
-      const loading = DeterminateBar({});
+    t.test('Should expose the right interface', (t) => {
+      const loading = DeterminateBar();
 
-      t.same(loading.op1, loadingSharedOperations.op1);
-      t.same(loading.op2, barSharedOperations.op2);
-      t.same(loading.op3, determinateLoadingSharedOperations.op3);
-      t.same(loading.render, DeterminateBar.__get__('determinateBarRender'));
+      t.ok(loading.start);
+      t.ok(loading.setProgress);
+      t.ok(loading.stop);
 
       t.end();
     });
@@ -141,5 +145,38 @@ test('DeterminateBar', (t) => {
     t.end();
   });
 
+  t.test('method: stop', (t) => {
+    t.test('Should clear the line if the option "clearOnStop" is true', (t) => {
+      DeterminateBar.__set__('loadingInit',
+        (context, config = {}) => context.clearOnStop = config.clearOnStop);
+      let loading = DeterminateBar();
+      loading.stop();
+      t.notOk(clearLineSpy.called);
+      loading = DeterminateBar({ clearOnStop: true });
+      loading.stop();
+      t.ok(clearLineSpy.called);
+      t.end();
+    });
+
+    t.test('Should bring back the cursor', (t) => {
+      const loading = DeterminateBar();
+      loading.stop();
+      t.ok(showCursorSpy.called);
+      t.end();
+    });
+
+    t.end();
+  });
+
+  t.tearDown(() => {
+    DeterminateBar.__set__('loadingInit', loadingInit);
+    DeterminateBar.__set__('barLoadingInit', barLoadingInit);
+    DeterminateBar.__set__('determinateLoadingInit', determinateLoadingInit);
+    DeterminateBar.__set__('updateMessage', updateMessage);
+    DeterminateBar.__set__('clearLine', clearLine);
+    DeterminateBar.__set__('showCursor', showCursor);
+  });
+
   t.end();
 });
+
