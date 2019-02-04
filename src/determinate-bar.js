@@ -39,9 +39,7 @@ const DeterminateBar = (config) => {
     {
       start: () => start(context, determinateBarRender),
       stop: () => {
-        if (context.clearOnStop) {
-          clearLine(context);
-        }
+        clearLine(context);
         showCursor(context);
       },
       setProgress: progress => setProgress(context, determinateBarRender, progress)

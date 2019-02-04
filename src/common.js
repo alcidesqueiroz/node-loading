@@ -49,8 +49,7 @@ function updateMessage(context) {
   context.stream.write('> '.gray.dim + context.message.bold[context.messageColor]);
 }
 
-const loadingInit = (context, { stream = 'STDERR', row, clearOnStop } = {}) => {
-  context.clearOnStop = clearOnStop;
+const loadingInit = (context, { stream = 'STDERR', row } = {}) => {
   context.row = row;
   context.stream = { 'STDERR': process.stderr, 'STDOUT': process.stdout }[stream];
 };

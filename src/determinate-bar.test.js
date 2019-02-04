@@ -4,12 +4,12 @@ const rewire = require('rewire');
 const sinon = require('sinon');
 const DeterminateBar = rewire('./determinate-bar');
 
-let loadingInit = DeterminateBar.__get__('loadingInit');
-let barLoadingInit = DeterminateBar.__get__('barLoadingInit');
-let determinateLoadingInit = DeterminateBar.__get__('determinateLoadingInit');
-let updateMessage = DeterminateBar.__get__('updateMessage');
-let clearLine = DeterminateBar.__get__('clearLine');
-let showCursor = DeterminateBar.__get__('showCursor');
+const loadingInit = DeterminateBar.__get__('loadingInit');
+const barLoadingInit = DeterminateBar.__get__('barLoadingInit');
+const determinateLoadingInit = DeterminateBar.__get__('determinateLoadingInit');
+const updateMessage = DeterminateBar.__get__('updateMessage');
+const clearLine = DeterminateBar.__get__('clearLine');
+const showCursor = DeterminateBar.__get__('showCursor');
 
 test('DeterminateBar', (t) => {
   let loadingInitSpy;
@@ -121,13 +121,13 @@ test('DeterminateBar', (t) => {
       DeterminateBar.__set__('determinateBarLoadingInit', determinateBarLoadingInitSpy);
       DeterminateBar(config);
       t.ok(loadingInitSpy.called);
-      t.same(loadingInitSpy.args[0][1], config);
+      t.equal(loadingInitSpy.args[0][1], config);
       t.ok(barLoadingInitSpy.called);
-      t.same(barLoadingInitSpy.args[0][1], config);
+      t.equal(barLoadingInitSpy.args[0][1], config);
       t.ok(determinateLoadingInitSpy.called);
-      t.same(determinateLoadingInitSpy.args[0][1], config);
+      t.equal(determinateLoadingInitSpy.args[0][1], config);
       t.ok(determinateBarLoadingInitSpy.called);
-      t.same(determinateBarLoadingInitSpy.args[0][1], config);
+      t.equal(determinateBarLoadingInitSpy.args[0][1], config);
 
       t.end();
     });
@@ -146,13 +146,8 @@ test('DeterminateBar', (t) => {
   });
 
   t.test('method: stop', (t) => {
-    t.test('Should clear the line if the option "clearOnStop" is true', (t) => {
-      DeterminateBar.__set__('loadingInit',
-        (context, config = {}) => context.clearOnStop = config.clearOnStop);
+    t.test('Should clear the line', (t) => {
       let loading = DeterminateBar();
-      loading.stop();
-      t.notOk(clearLineSpy.called);
-      loading = DeterminateBar({ clearOnStop: true });
       loading.stop();
       t.ok(clearLineSpy.called);
       t.end();

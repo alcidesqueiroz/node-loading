@@ -14,7 +14,7 @@ const {
   setProgress
 } = common;
 
-let hideCursor = common.__get__('hideCursor');
+const hideCursor = common.__get__('hideCursor');
 
 test('function: start', (t) => {
   let signalExitSpy;
@@ -93,7 +93,7 @@ test('function: clearLine', (t) => {
     clearLine(context);
     const cursorToSpy = context.stream.cursorTo;
     t.ok(cursorToSpy.called);
-    t.same(cursorToSpy.args[0][1], context.row);
+    t.equal(cursorToSpy.args[0][1], context.row);
 
     const row = {};
     clearLine(context, row);
@@ -267,30 +267,22 @@ test('function: setProgress', (t) => {
 });
 
 test('function: loadingInit', (t) => {
-  t.test('Should initialize the clearOnStop property', (t) => {
-    const context = {};
-    const clearOnStop = {};
-    loadingInit(context, { clearOnStop });
-    t.same(context.clearOnStop, clearOnStop);
-    t.end();
-  });
-
   t.test('Should initialize the row property', (t) => {
     const context = {};
     const row = {};
     loadingInit(context, { row });
-    t.same(context.row, row);
+    t.equal(context.row, row);
     t.end();
   });
 
   t.test('Should initialize the stream property', (t) => {
     const context = {};
     loadingInit(context, { });
-    t.same(context.stream, process.stderr);
+    t.equal(context.stream, process.stderr);
     loadingInit(context, { stream: 'STDOUT' });
-    t.same(context.stream, process.stdout);
+    t.equal(context.stream, process.stdout);
     loadingInit(context, { stream: 'STDERR' });
-    t.same(context.stream, process.stderr);
+    t.equal(context.stream, process.stderr);
     t.end();
   });
 
