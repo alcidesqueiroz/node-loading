@@ -1,6 +1,6 @@
 const test = require('tap').test;
-const DeterminateBar = require('./determinate-bar');
-const IndeterminateBar = require('./indeterminate-bar');
+const DeterminateBar = require('./src/determinate-bar');
+const IndeterminateBar = require('./src/indeterminate-bar');
 const index = require('./index');
 
 test('Should return loading functions', (t) => {
