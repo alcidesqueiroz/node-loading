@@ -16,7 +16,11 @@
     "test": "eslint index.js && tap test.js"
   },
   "files": [
-    "index.js"
+    "/index.js",
+    "/src/*.js",
+    "!/src/*.test.js",
+    "/README.md",
+    "/LICENSE.md"
   ],
   "keywords": [
     "node",

@@ -1,4 +1,4 @@
 'use strict';
 
 require('colors');
-require('./src/index');
+module.exports = require('./src/index');
