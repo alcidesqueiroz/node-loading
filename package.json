@@ -1,6 +1,6 @@
 {
   "name": "node-loading",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🕶 Superb loading animations for Node console apps.",
   "license": "MIT",
   "repository": "alcidesqueiroz/node-loading",
