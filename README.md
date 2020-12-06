@@ -1,4 +1,4 @@
-# node-loading [![Build status](https://travis-ci.org/alcidesqueiroz/node-loading.svg?branch=master)](https://travis-ci.org/alcidesqueiroz/node-loading)
+# node-loading [![Build status](https://travis-ci.com/alcidesqueiroz/node-loading.svg?branch=master)](https://travis-ci.com/alcidesqueiroz/node-loading)
 
 > 🕶  Superb loadings for Node console apps.
 
