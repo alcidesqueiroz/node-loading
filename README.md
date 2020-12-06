@@ -1,4 +1,4 @@
-# node-loading [![Build status](https://travis-ci.org/alcidesqueiroz/node-loading.svg?branch=master)](https://travis-ci.org/alcidesqueiroz/node-loading)
+# node-loading [![Build status](https://travis-ci.com/alcidesqueiroz/node-loading.svg?branch=master)](https://travis-ci.com/alcidesqueiroz/node-loading)
 
 > 🕶  Superb loadings for Node console apps.
 
@@ -10,7 +10,7 @@ A set of loading animations for terminal apps written in Node.
 
 With npm:
 ```
-$ npm install --save node-loading
+$ npm install node-loading
 ```
 
 With Yarn:

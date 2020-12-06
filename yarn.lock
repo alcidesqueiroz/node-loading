@@ -3292,10 +3292,10 @@ vlq@^0.2.1:
   resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
   integrity sha512-DRibZL6DsNhIgYQ+wNdWDL2SL3bKPlVrRiBqV5yuMm++op8W4kGFtaQfCs4KEJn0wBZcHVHJ3eoywX8983k1ow==
 
-whatype@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/whatype/-/whatype-1.0.0.tgz#1644621587b8cef4ed479235594b3f63bf2deeac"
-  integrity sha512-yxiP0IzV2uCYeOqkmK58ZEFI8bsRtu46QTOqIwnqEl79zWNdJdNh8DcKYQeE85T4SoBMRj+V3Ka41trZkNvnpQ==
+whatype@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/whatype/-/whatype-1.1.0.tgz#b9527b2bbb6573848478878aa6811085cab079ae"
+  integrity sha512-RZs+ISAQFg5ElpAIU1++sCw/m58djOSvIDCoJE7fnchsX3QlL2h3P9OVtNU6e9vwWaDJBqn7V2bItOp+vzetTw==
 
 which-module@^2.0.0:
   version "2.0.0"
