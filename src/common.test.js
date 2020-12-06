@@ -45,7 +45,7 @@ test('function: start', (t) => {
     t.same(context.row, 10);
 
     delete context.row;
-    common.__set__('getCursorPosition', { sync: () => ({ row: 5 }) });
+    common.__set__('getCursorPosition', () => ({ row: 5 }));
     start(context, renderSpy);
     t.same(context.row, 4);
     t.end();

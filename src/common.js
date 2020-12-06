@@ -2,13 +2,13 @@
 
 const whatype = require('whatype');
 const signalExit = require('signal-exit');
-const getCursorPosition = require('get-cursor-position');
+const childProcess = require('child_process');
 
 const CONSOLE_WIDTH = process.stdout.columns;
 let isCursorVisible = true;
 
 function start(context, render) {
-  context.row = context.row !== undefined ? context.row : getCursorPosition.sync().row - 1;
+  context.row = context.row !== undefined ? context.row : getCursorPosition().row - 1;
   // Brings back the cursor no matter how the process exits
   signalExit(() => showCursor(context, true), { alwaysLast: true });
 
@@ -61,6 +61,11 @@ const barLoadingInit = (context, { width = CONSOLE_WIDTH } = {}) => {
 const determinateLoadingInit = (context) => {
   context.progress = 0;
 };
+
+const getCursorPosition = () => {
+  return JSON.parse(childProcess.execSync('./src/get-cursor-position.sh').toString());
+};
+
 
 module.exports = {
   loadingInit,
